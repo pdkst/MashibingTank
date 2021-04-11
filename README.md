@@ -18,7 +18,7 @@ fork of [bjmashibing/tank](https://github.com/bjmashibing/tank)
 ## 安装
 进入到项目主目录执行
 ```bash
-$ mvn clean install -Dmaven.test.skip=true
+$ mvn clean package -Dmaven.test.skip=true
 ```
 或者进入到项目目录使用ide打开
 
@@ -27,7 +27,7 @@ $ mvn clean install -Dmaven.test.skip=true
 主运行方法类
 
 ```bash
-$ java io.github.pdkst.tank.Main
+$ java -cp MashibingTank-1.0-SNAPSHOT.jar io.github.pdkst.tank.Main
 ```
 ## 相关仓库
 
