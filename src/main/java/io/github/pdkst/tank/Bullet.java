@@ -17,7 +17,7 @@ public class Bullet {
     private int y;
     private Dir dir;
     private Tank tank;
-    private TankFrame tankFrame;
+    private GameModel model;
     private Group group;
     private boolean living = true;
     Rectangle rectangle = new Rectangle();
@@ -25,7 +25,7 @@ public class Bullet {
 
     public Bullet(Tank tank) {
         this.tank = tank;
-        this.tankFrame = tank.getTankFrame();
+        this.model = tank.getModel();
         this.group = tank.getGroup();
         this.x = tank.getX() + (Tank.WIDTH - WIDTH) / 2;
         this.y = tank.getY() + (Tank.HEIGHT - HEIGHT) / 2;
@@ -67,7 +67,7 @@ public class Bullet {
     }
 
     private boolean isInFrame() {
-        return x > 0 && y > 0 && x < tankFrame.getWidth() && y < tankFrame.getHeight();
+        return x > 0 && y > 0 && x < model.getWidth() && y < model.getHeight();
     }
 
     public void collideWith(Tank tank) {

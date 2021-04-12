@@ -16,7 +16,7 @@ public class Tank {
     public static final int WIDTH = ResourceManager.tankImageUp.getWidth();
     public static final int HEIGHT = ResourceManager.tankImageUp.getHeight();
     private MyKeyListener myKeyListener = new MyKeyListener(this);
-    private TankFrame tankFrame;
+    private GameModel model;
     private int x;
     private int y;
     private Dir dir = Dir.DOWN;
@@ -28,11 +28,11 @@ public class Tank {
     private Random random = new Random();
     Rectangle rectangle = new Rectangle();
 
-    public Tank(TankFrame tankFrame, int x, int y) {
-        this.tankFrame = tankFrame;
+    public Tank(GameModel model, int x, int y) {
+        this.model = model;
         this.x = x;
         this.y = y;
-        tankFrame.addKeyListener(getMyKeyListener());
+        model.getTankFrame().addKeyListener(getMyKeyListener());
         rectangle.x = this.x;
         rectangle.y = this.y;
         rectangle.width = WIDTH;
@@ -83,11 +83,11 @@ public class Tank {
         if (y < 30) {
             y = 30;
         }
-        if (x > tankFrame.getWidth() - width) {
-            x = tankFrame.getWidth() - width;
+        if (x > model.getWidth() - width) {
+            x = model.getWidth() - width;
         }
-        if (y > tankFrame.getHeight() - height) {
-            y = tankFrame.getHeight() - height;
+        if (y > model.getHeight() - height) {
+            y = model.getHeight() - height;
         }
         rectangle.x = this.x;
         rectangle.y = this.y;
@@ -113,7 +113,7 @@ public class Tank {
 
     public void fire() {
         final Bullet bullet = new Bullet(this);
-        tankFrame.bullets.add(bullet);
+        model.addBullet(bullet);
     }
 
     public boolean isLiving() {
@@ -122,6 +122,6 @@ public class Tank {
 
     public void die() {
         living = false;
-        tankFrame.explodes.add(new Explode(this));
+        model.addExplode(new Explode(this));
     }
 }

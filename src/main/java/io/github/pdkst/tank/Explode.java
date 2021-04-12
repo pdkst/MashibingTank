@@ -10,7 +10,6 @@ import java.awt.*;
  */
 @Data
 public class Explode {
-    private TankFrame tankFrame;
     private int x;
     private int y;
     private int step = 0;
@@ -19,7 +18,6 @@ public class Explode {
     public Explode(Tank tank) {
         this.x = tank.getX();
         this.y = tank.getY();
-        this.tankFrame = tank.getTankFrame();
     }
 
     public void paint(Graphics graphics) {

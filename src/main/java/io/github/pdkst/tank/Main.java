@@ -10,18 +10,14 @@ public class Main {
 
     public static void main(String[] args) {
         final TankFrame tankFrame = new TankFrame();
-        final String initTankCount = PropertyManager.getProperty("initTankCount");
-        for (int i = 0; i < Integer.parseInt(initTankCount); i++) {
-            final Tank tank = new Tank(tankFrame, 100 * i, 300);
-            tankFrame.tanks.add(tank);
-        }
-        while (true) {
-            try {
+
+        try {
+            while (true) {
                 TimeUnit.MILLISECONDS.sleep(50);
                 tankFrame.repaint();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

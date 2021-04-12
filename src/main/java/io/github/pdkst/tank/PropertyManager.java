@@ -26,6 +26,14 @@ public class PropertyManager {
         return properties.getProperty(key);
     }
 
+    public static int getIntProperty(String key) {
+        if (properties == null) {
+            return -1;
+        }
+        final String property = properties.getProperty(key);
+        return Integer.parseInt(property);
+    }
+
     public static void main(String[] args) {
         System.out.println(getProperty("initTankCount"));
     }
