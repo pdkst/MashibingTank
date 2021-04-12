@@ -1,14 +1,18 @@
 package io.github.pdkst.tank;
 
+import io.github.pdkst.tank.model.GameObject;
+import io.github.pdkst.tank.model.Tank;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.awt.*;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Facade 门面模式
+ *
  * @author pdkst
  * @since 2021/4/12
  */
@@ -16,14 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GameModel {
 
+    final List<GameObject> gameObjects = new ArrayList<>();
+    final Collider<GameObject> collider = new BulletCollider();
     private final TankFrame tankFrame;
     private final Tank myTank;
     private final int width;
     private final int height;
-
-    final List<Tank> tanks = new LinkedList<>();
-    final List<Bullet> bullets = new LinkedList<>();
-    final List<Explode> explodes = new LinkedList<>();
 
     public GameModel(TankFrame tankFrame) {
         this.tankFrame = tankFrame;
@@ -36,66 +38,43 @@ public class GameModel {
         // 敌人坦克
         for (int i = 0; i < initTankCount; i++) {
             final Tank tank = new Tank(this, 100 * i, 300);
-            addTank(tank);
+            addGameObject(tank);
         }
     }
 
-    public void addBullet(Bullet bullet) {
-        bullets.add(bullet);
+    public void addGameObject(GameObject object) {
+        gameObjects.add(object);
     }
 
-    public void addTank(Tank tank) {
-        tanks.add(tank);
-    }
-
-    public void addExplode(Explode explode) {
-        explodes.add(explode);
+    public void removeGameObject(GameObject object) {
+        gameObjects.add(object);
     }
 
     public void paint(Graphics graphics) {
-        final Color color = graphics.getColor();
-        graphics.setColor(Color.WHITE);
-        graphics.drawString("子弹数量：" + bullets.size(), 30, 60);
-        graphics.drawString("坦克数量：" + tanks.size(), 30, 90);
-        graphics.setColor(color);
 
         if (myTank != null) {
             myTank.paint(graphics);
         }
-        final Iterator<Bullet> iterator = bullets.iterator();
-        while (iterator.hasNext()) {
-            final Bullet bullet = iterator.next();
-            bullet.paint(graphics);
-            if (!bullet.isLiving()) {
-                iterator.remove();
+        for (int i = 0; i < gameObjects.size(); i++) {
+            final GameObject object = gameObjects.get(i);
+            object.paint(graphics);
+            if (!object.isLiving()) {
+                gameObjects.remove(object);
+                object.die();
             }
         }
-        final Iterator<Tank> tankIterator = tanks.iterator();
-        while (tankIterator.hasNext()) {
-            Tank tank = tankIterator.next();
-            if (tank.isLiving()) {
-                tank.paint(graphics);
-            } else {
-                tankIterator.remove();
-                tankFrame.removeKeyListener(tank.getMyKeyListener());
-            }
-        }
-
         // 碰撞检查
-        for (final Bullet bullet : bullets) {
-            for (final Tank tank : tanks) {
-                bullet.collideWith(tank);
+        for (int i = 0; i < gameObjects.size(); i++) {
+            for (int j = 0; j < gameObjects.size(); j++) {
+                final GameObject o1 = gameObjects.get(i);
+                final GameObject o2 = gameObjects.get(j);
+                collider.collide(o1, o2, unused -> {
+                    gameObjects.remove(o1);
+                    gameObjects.remove(o2);
+                    o1.die();
+                    o2.die();
+                });
             }
         }
-        final Iterator<Explode> explodeIterator = explodes.iterator();
-        while (explodeIterator.hasNext()) {
-            Explode explode = explodeIterator.next();
-            if (explode.isLiving()) {
-                explode.paint(graphics);
-            } else {
-                explodeIterator.remove();
-            }
-        }
-
     }
 }

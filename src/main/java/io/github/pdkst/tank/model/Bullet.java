@@ -1,6 +1,10 @@
-package io.github.pdkst.tank;
+package io.github.pdkst.tank.model;
 
-import lombok.Data;
+import io.github.pdkst.tank.Dir;
+import io.github.pdkst.tank.GameModel;
+import io.github.pdkst.tank.Group;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 
@@ -8,34 +12,30 @@ import java.awt.*;
  * @author pdkst
  * @since 2021/4/11
  */
-@Data
-public class Bullet {
+@Getter
+@Setter
+public class Bullet extends GameObject {
     private static final int SPEED = 20;
     public static final int WIDTH = 5;
     public static final int HEIGHT = 5;
-    private int x;
-    private int y;
     private Dir dir;
     private Tank tank;
     private GameModel model;
     private Group group;
     private boolean living = true;
-    Rectangle rectangle = new Rectangle();
 
 
     public Bullet(Tank tank) {
+        super(tank);
         this.tank = tank;
         this.model = tank.getModel();
         this.group = tank.getGroup();
         this.x = tank.getX() + (Tank.WIDTH - WIDTH) / 2;
         this.y = tank.getY() + (Tank.HEIGHT - HEIGHT) / 2;
         this.dir = tank.getDir();
-        rectangle.x = this.x;
-        rectangle.y = this.y;
-        rectangle.width = WIDTH;
-        rectangle.height = HEIGHT;
     }
 
+    @Override
     public void paint(Graphics graphics) {
         graphics.fillOval(x, y, WIDTH, HEIGHT);
         graphics.setColor(Color.RED);
@@ -58,10 +58,10 @@ public class Bullet {
                 break;
             default:
         }
-        rectangle.x = this.x;
-        rectangle.y = this.y;
+        moveTo(x, y);
     }
 
+    @Override
     public boolean isLiving() {
         return living && isInFrame();
     }
@@ -70,17 +70,21 @@ public class Bullet {
         return x > 0 && y > 0 && x < model.getWidth() && y < model.getHeight();
     }
 
-    public void collideWith(Tank tank) {
+    public boolean collideWith(Tank tank) {
         if (tank.getGroup() == group) {
-            return;
+            return false;
         }
-        if (rectangle.intersects(tank.getRectangle())) {
+        boolean collided = false;
+        if (getRectangle().intersects(tank.getRectangle())) {
             tank.die();
             this.die();
+            collided = true;
         }
+        return collided;
     }
 
-    private void die() {
+    @Override
+    public void die() {
         living = false;
     }
 }

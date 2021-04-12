@@ -1,6 +1,8 @@
-package io.github.pdkst.tank;
+package io.github.pdkst.tank.model;
 
-import lombok.Data;
+import io.github.pdkst.tank.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,35 +12,27 @@ import java.util.Random;
  * @author pdkst
  * @since 2021/4/11
  */
-@Data
-public class Tank {
+@Getter
+@Setter
+public class Tank extends GameObject {
     public static final int SPEED_INIT = 10;
     public static final int WIDTH = ResourceManager.tankImageUp.getWidth();
     public static final int HEIGHT = ResourceManager.tankImageUp.getHeight();
     private MyKeyListener myKeyListener = new MyKeyListener(this);
     private GameModel model;
-    private int x;
-    private int y;
     private Dir dir = Dir.DOWN;
     private int speed = SPEED_INIT;
-    private int width = WIDTH;
-    private int height = HEIGHT;
     private boolean living = true;
     private Group group = Group.BAD;
     private Random random = new Random();
-    Rectangle rectangle = new Rectangle();
 
     public Tank(GameModel model, int x, int y) {
+        super(x, y, WIDTH, HEIGHT);
         this.model = model;
-        this.x = x;
-        this.y = y;
         model.getTankFrame().addKeyListener(getMyKeyListener());
-        rectangle.x = this.x;
-        rectangle.y = this.y;
-        rectangle.width = WIDTH;
-        rectangle.height = HEIGHT;
     }
 
+    @Override
     public void paint(Graphics graphics) {
         final Color color = graphics.getColor();
         final Graphics2D graphics2D = (Graphics2D) graphics;
@@ -89,8 +83,7 @@ public class Tank {
         if (y > model.getHeight() - height) {
             y = model.getHeight() - height;
         }
-        rectangle.x = this.x;
-        rectangle.y = this.y;
+        moveTo(x, y);
     }
 
     private void move() {
@@ -113,15 +106,18 @@ public class Tank {
 
     public void fire() {
         final Bullet bullet = new Bullet(this);
-        model.addBullet(bullet);
+        model.addGameObject(bullet);
     }
 
+    @Override
     public boolean isLiving() {
         return living;
     }
 
+    @Override
     public void die() {
         living = false;
-        model.addExplode(new Explode(this));
+        model.addGameObject(new Explode(this));
+        model.getTankFrame().removeKeyListener(myKeyListener);
     }
 }
