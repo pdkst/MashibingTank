@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ import java.util.List;
 public class GameModel {
 
     final List<GameObject> gameObjects = new ArrayList<>();
-    final Collider<GameObject> collider = new BulletCollider();
+    final ColliderChain colliderChain = new ColliderChain();
     private final TankFrame tankFrame;
     private final Tank myTank;
     private final int width;
@@ -68,12 +67,12 @@ public class GameModel {
             for (int j = 0; j < gameObjects.size(); j++) {
                 final GameObject o1 = gameObjects.get(i);
                 final GameObject o2 = gameObjects.get(j);
-                collider.collide(o1, o2, unused -> {
+                if (colliderChain.collide(o1, o2)) {
                     gameObjects.remove(o1);
                     gameObjects.remove(o2);
                     o1.die();
                     o2.die();
-                });
+                }
             }
         }
     }
