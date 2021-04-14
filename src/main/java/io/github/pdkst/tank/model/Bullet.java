@@ -86,5 +86,6 @@ public class Bullet extends GameObject {
     @Override
     public void die() {
         living = false;
+        model.removeGameObject(this);
     }
 }

@@ -68,12 +68,7 @@ public class GameModel {
             for (int j = 0; j < gameObjects.size(); j++) {
                 final GameObject o1 = gameObjects.get(i);
                 final GameObject o2 = gameObjects.get(j);
-                if (colliderChain.collide(o1, o2)) {
-                    gameObjects.remove(o1);
-                    gameObjects.remove(o2);
-                    o1.die();
-                    o2.die();
-                }
+                colliderChain.collide(o1, o2);
             }
         }
     }

@@ -119,5 +119,6 @@ public class Tank extends GameObject {
         living = false;
         model.addGameObject(new Explode(this));
         model.getTankFrame().removeKeyListener(myKeyListener);
+        model.removeGameObject(this);
     }
 }
