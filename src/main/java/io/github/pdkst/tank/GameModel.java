@@ -1,5 +1,6 @@
 package io.github.pdkst.tank;
 
+import io.github.pdkst.tank.cor.ColliderChain;
 import io.github.pdkst.tank.model.GameObject;
 import io.github.pdkst.tank.model.Tank;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package io.github.pdkst.tank;
+package io.github.pdkst.tank.cor;
 
 import io.github.pdkst.tank.model.Bullet;
 import io.github.pdkst.tank.model.GameObject;
