@@ -26,10 +26,15 @@ public class Tank extends GameObject {
     private Group group = Group.BAD;
     private Random random = new Random();
 
+    private int oldX;
+    private int oldY;
+
     public Tank(GameModel model, int x, int y) {
         super(x, y, WIDTH, HEIGHT);
         this.model = model;
         model.getTankFrame().addKeyListener(getMyKeyListener());
+        oldX = x;
+        oldY = y;
     }
 
     @Override
@@ -54,6 +59,7 @@ public class Tank extends GameObject {
         }
         graphics2D.drawImage(tankImage, x, y, null);
         graphics.setColor(color);
+
         if (group == Group.GOOD) {
             if (myKeyListener.isMoving()) {
                 move();
@@ -87,6 +93,9 @@ public class Tank extends GameObject {
     }
 
     private void move() {
+        oldX = x;
+        oldY = y;
+
         switch (dir) {
             case LEFT:
                 x -= speed;
@@ -104,9 +113,14 @@ public class Tank extends GameObject {
         }
     }
 
+    public void back() {
+        x = oldX;
+        y = oldY;
+    }
+
     public void fire() {
         final Bullet bullet = new Bullet(this);
-        model.addGameObject(bullet);
+        model.addBlock(bullet);
     }
 
     @Override
@@ -117,8 +131,8 @@ public class Tank extends GameObject {
     @Override
     public void die() {
         living = false;
-        model.addGameObject(new Explode(this));
+        model.addBlock(new Explode(this));
         model.getTankFrame().removeKeyListener(myKeyListener);
-        model.removeGameObject(this);
+        model.removeBlock(this);
     }
 }

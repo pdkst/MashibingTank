@@ -1,6 +1,6 @@
 package io.github.pdkst.tank.cor;
 
-import io.github.pdkst.tank.model.GameObject;
+import io.github.pdkst.tank.model.GameBlock;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +14,9 @@ public class ColliderChain implements Collider {
 
     public ColliderChain() {
         add(new BulletCollider());
+        add(new TankTankCollider());
+        add(new BulletWallCollider());
+        add(new TankWallCollider());
     }
 
     public void add(Collider collider) {
@@ -21,7 +24,7 @@ public class ColliderChain implements Collider {
     }
 
     @Override
-    public boolean collide(GameObject o1, GameObject o2) {
+    public boolean collide(GameBlock o1, GameBlock o2) {
         for (final Collider collider : colliderList) {
             if (collider.collide(o1, o2)) {
                 return true;

@@ -1,5 +1,6 @@
 package io.github.pdkst.tank.cor;
 
+import io.github.pdkst.tank.model.GameBlock;
 import io.github.pdkst.tank.model.GameObject;
 
 /**
@@ -15,5 +16,5 @@ public interface Collider {
      * @param o1 游戏对象1
      * @param o2 游戏对象2
      */
-    boolean collide(GameObject o1, GameObject o2);
+    boolean collide(GameBlock o1, GameBlock o2);
 }
