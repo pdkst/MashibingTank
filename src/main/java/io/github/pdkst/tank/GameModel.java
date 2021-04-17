@@ -21,25 +21,20 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class GameModel {
+    private final static GameModel INSTANCE = new GameModel();
 
     final List<GameBlock> gameObjects = new ArrayList<>();
     final ColliderChain colliderChain = new ColliderChain();
-    private final TankFrame tankFrame;
     private final Tank myTank;
-    private final int width;
-    private final int height;
 
-    public GameModel(TankFrame tankFrame) {
-        this.tankFrame = tankFrame;
-        this.width = tankFrame.getWidth();
-        this.height = tankFrame.getHeight();
+    public GameModel() {
         final int initTankCount = PropertyManager.getIntProperty("initTankCount");
         // 自己坦克
-        this.myTank = new Tank(this, 50, 50);
+        this.myTank = new Tank(50, 50);
         myTank.setGroup(Group.GOOD);
         // 敌人坦克
         for (int i = 0; i < initTankCount; i++) {
-            final Tank tank = new Tank(this, 100 * i, 300);
+            final Tank tank = new Tank(100 * i, 300);
             addBlock(tank);
         }
         // 墙
@@ -81,5 +76,9 @@ public class GameModel {
                 colliderChain.collide(o1, o2);
             }
         }
+    }
+
+    public static GameModel getInstance() {
+        return INSTANCE;
     }
 }

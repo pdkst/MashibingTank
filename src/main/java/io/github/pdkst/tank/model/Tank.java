@@ -18,21 +18,18 @@ public class Tank extends GameObject {
     public static final int SPEED_INIT = 10;
     public static final int WIDTH = ResourceManager.tankImageUp.getWidth();
     public static final int HEIGHT = ResourceManager.tankImageUp.getHeight();
-    private MyKeyListener myKeyListener = new MyKeyListener(this);
-    private GameModel model;
     private Dir dir = Dir.DOWN;
     private int speed = SPEED_INIT;
     private boolean living = true;
+    private boolean moving = true;
     private Group group = Group.BAD;
     private Random random = new Random();
 
     private int oldX;
     private int oldY;
 
-    public Tank(GameModel model, int x, int y) {
+    public Tank(int x, int y) {
         super(x, y, WIDTH, HEIGHT);
-        this.model = model;
-        model.getTankFrame().addKeyListener(getMyKeyListener());
         oldX = x;
         oldY = y;
     }
@@ -60,17 +57,15 @@ public class Tank extends GameObject {
         graphics2D.drawImage(tankImage, x, y, null);
         graphics.setColor(color);
 
-        if (group == Group.GOOD) {
-            if (myKeyListener.isMoving()) {
-                move();
-            }
-        } else if (group == Group.BAD) {
+        if (group == Group.BAD) {
             if (random.nextInt(100) > 95) {
                 this.fire();
             }
             if (random.nextInt(100) > 95) {
                 dir = Dir.values()[random.nextInt(4)];
             }
+        }
+        if (moving) {
             move();
         }
         boundCheck();
@@ -83,11 +78,11 @@ public class Tank extends GameObject {
         if (y < 30) {
             y = 30;
         }
-        if (x > model.getWidth() - width) {
-            x = model.getWidth() - width;
+        if (x > TankFrame.GAME_HEIGHT - width) {
+            x = TankFrame.GAME_HEIGHT - width;
         }
-        if (y > model.getHeight() - height) {
-            y = model.getHeight() - height;
+        if (y > TankFrame.GAME_HEIGHT - height) {
+            y = TankFrame.GAME_HEIGHT - height;
         }
         moveTo(x, y);
     }
@@ -116,11 +111,12 @@ public class Tank extends GameObject {
     public void back() {
         x = oldX;
         y = oldY;
+        moveTo(x, y);
     }
 
     public void fire() {
         final Bullet bullet = new Bullet(this);
-        model.addBlock(bullet);
+        GameModel.getInstance().addBlock(bullet);
     }
 
     @Override
@@ -130,9 +126,9 @@ public class Tank extends GameObject {
 
     @Override
     public void die() {
+        super.die();
         living = false;
+        final GameModel model = GameModel.getInstance();
         model.addBlock(new Explode(this));
-        model.getTankFrame().removeKeyListener(myKeyListener);
-        model.removeBlock(this);
     }
 }

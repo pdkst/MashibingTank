@@ -2,6 +2,7 @@ package io.github.pdkst.tank;
 
 import io.github.pdkst.tank.model.Tank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -10,6 +11,7 @@ import java.awt.event.KeyEvent;
  * @author pdkst
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class MyKeyListener extends KeyAdapter {
     private final Tank tank;
     private boolean bl = false;
@@ -21,17 +23,11 @@ public class MyKeyListener extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
         this.updateStatus(e.getKeyCode(), true);
-        if (tank.getGroup() == Group.GOOD) {
-            tank.setDir(this.getMainTankDir());
-        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         this.updateStatus(e.getKeyCode(), false);
-        if (tank.getGroup() == Group.GOOD) {
-            tank.setDir(this.getMainTankDir());
-        }
     }
 
     private Dir getMainTankDir() {
@@ -72,6 +68,10 @@ public class MyKeyListener extends KeyAdapter {
                 tank.fire();
                 break;
             default:
+        }
+        if (tank.getGroup() == Group.GOOD) {
+            tank.setDir(this.getMainTankDir());
+            tank.setMoving(this.isMoving());
         }
     }
 }

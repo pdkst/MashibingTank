@@ -1,9 +1,9 @@
 package io.github.pdkst.tank;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
+import java.awt.event.KeyListener;
 
 /**
  * @author pdkst
@@ -11,16 +11,20 @@ import java.awt.*;
  */
 @Slf4j
 public class TankFrame extends GameFrame {
-    @Getter
-    final GameModel model = new GameModel(this);
+    public static final int GAME_WIDTH = 800;
+    public static final int GAME_HEIGHT = 600;
 
     public TankFrame() throws HeadlessException {
-        super(800, 600);
+        super(GAME_WIDTH, GAME_HEIGHT);
         setTitle("坦克大战");
+        GameModel model = GameModel.getInstance();
+        KeyListener keyListener = new MyKeyListener(model.getMyTank());
+        addKeyListener(keyListener);
     }
 
     @Override
     public void paint(Graphics g) {
+        GameModel model = GameModel.getInstance();
         if (model != null) {
             model.paint(g);
         }

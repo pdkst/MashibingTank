@@ -16,8 +16,8 @@ public class Explode extends GameObject {
     private int step = 0;
     private boolean living = true;
 
-    public Explode(Tank tank) {
-        super(tank);
+    public Explode(GameBlock block) {
+        super(block);
     }
 
     @Override

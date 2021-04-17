@@ -3,6 +3,7 @@ package io.github.pdkst.tank.model;
 import io.github.pdkst.tank.Dir;
 import io.github.pdkst.tank.GameModel;
 import io.github.pdkst.tank.Group;
+import io.github.pdkst.tank.TankFrame;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,16 +20,11 @@ public class Bullet extends GameObject {
     public static final int WIDTH = 5;
     public static final int HEIGHT = 5;
     private Dir dir;
-    private Tank tank;
-    private GameModel model;
     private Group group;
     private boolean living = true;
 
-
     public Bullet(Tank tank) {
         super(tank);
-        this.tank = tank;
-        this.model = tank.getModel();
         this.group = tank.getGroup();
         this.x = tank.getX() + (Tank.WIDTH - WIDTH) / 2;
         this.y = tank.getY() + (Tank.HEIGHT - HEIGHT) / 2;
@@ -67,7 +63,7 @@ public class Bullet extends GameObject {
     }
 
     private boolean isInFrame() {
-        return x > 0 && y > 0 && x < model.getWidth() && y < model.getHeight();
+        return x > 0 && y > 0 && x < TankFrame.GAME_HEIGHT && y < TankFrame.GAME_WIDTH;
     }
 
     public boolean collideWith(Tank tank) {
@@ -86,6 +82,6 @@ public class Bullet extends GameObject {
     @Override
     public void die() {
         living = false;
-        model.removeBlock(this);
+        GameModel.getInstance().removeBlock(this);
     }
 }
