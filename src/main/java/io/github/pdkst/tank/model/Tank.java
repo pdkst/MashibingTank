@@ -18,6 +18,7 @@ public class Tank extends GameObject {
     public static final int SPEED_INIT = 10;
     public static final int WIDTH = ResourceManager.tankImageUp.getWidth();
     public static final int HEIGHT = ResourceManager.tankImageUp.getHeight();
+    private Long id;
     private Dir dir = Dir.DOWN;
     private int speed = SPEED_INIT;
     private boolean living = true;
