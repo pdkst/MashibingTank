@@ -31,13 +31,23 @@ public class MessageDecoder extends ByteToMessageDecoder {
             return;
         }
         final byte[] bytes = new byte[length];
-        in.readBytes(bytes, 5, length);
+        in.readBytes(bytes);
         Msg msg = null;
         switch (msgType) {
             case TankJoin:
                 msg = new TankJoinMessage();
+                break;
+            case TankDirChange:
+                break;
+            case TankStop:
+                break;
+            case TankMovingStart:
+                break;
+            case BulletJoin:
+                break;
             default:
                 msg = new TankJoinMessage();
+                break;
         }
         msg.parse(bytes);
         out.add(msg);
