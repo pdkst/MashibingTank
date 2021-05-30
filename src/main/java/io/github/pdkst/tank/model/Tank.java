@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * @author pdkst
@@ -18,7 +19,7 @@ public class Tank extends GameObject {
     public static final int SPEED_INIT = 10;
     public static final int WIDTH = ResourceManager.tankImageUp.getWidth();
     public static final int HEIGHT = ResourceManager.tankImageUp.getHeight();
-    private Long id;
+    private UUID id = UUID.randomUUID();
     private Dir dir = Dir.DOWN;
     private int speed = SPEED_INIT;
     private boolean living = true;

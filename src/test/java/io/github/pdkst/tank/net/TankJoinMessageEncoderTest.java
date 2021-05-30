@@ -11,14 +11,14 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author pdkst
  * @since 2021/4/27
  */
-class TankMessageEncoderTest {
+class TankJoinMessageEncoderTest {
 
     @Test
     public void testEncoder() {
         final Tank tank = new Tank(1, 2);
         tank.setDir(Dir.UP);
-        final TankMessageEncoder tankMessageEncoder = new TankMessageEncoder();
-        final EmbeddedChannel embeddedChannel = new EmbeddedChannel(tankMessageEncoder);
+        final TankJoinMessageEncoder tankJoinMessageEncoder = new TankJoinMessageEncoder();
+        final EmbeddedChannel embeddedChannel = new EmbeddedChannel(tankJoinMessageEncoder);
         embeddedChannel.writeOutbound(tank);
 
         final ByteBuf msg = embeddedChannel.readOutbound();

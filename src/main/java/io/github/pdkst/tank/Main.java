@@ -10,7 +10,6 @@ public class Main {
 
     public static void main(String[] args) {
         final TankFrame tankFrame = new TankFrame();
-
         try {
             while (true) {
                 TimeUnit.MILLISECONDS.sleep(50);

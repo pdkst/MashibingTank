@@ -28,15 +28,9 @@ public class GameModel {
     private final Tank myTank;
 
     public GameModel() {
-        final int initTankCount = PropertyManager.getIntProperty("initTankCount");
         // 自己坦克
         this.myTank = new Tank(50, 50);
         myTank.setGroup(Group.GOOD);
-        // 敌人坦克
-        for (int i = 0; i < initTankCount; i++) {
-            final Tank tank = new Tank(100 * i, 300);
-            addBlock(tank);
-        }
         // 墙
         addBlock(new Wall(150, 150, 200, 50));
         addBlock(new Wall(550, 150, 200, 50));
