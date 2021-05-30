@@ -38,8 +38,8 @@ public class NettyTankClient implements Runnable {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             socketChannel = ch;
                             ch.pipeline()
-                                    .addLast(new TankJoinMessageEncoder())
-                                    .addLast(new TankJoinMessageDecoder())
+                                    .addLast(new MessageEncoder())
+                                    .addLast(new MessageDecoder())
                                     .addLast(new ClientHandler(consumer));
                         }
                     })

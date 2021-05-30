@@ -1,12 +1,16 @@
-package io.github.pdkst.tank.net;
+package io.github.pdkst.tank.msg;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import io.github.pdkst.tank.Dir;
 import io.github.pdkst.tank.Group;
 import io.github.pdkst.tank.model.Tank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.UUID;
 
@@ -15,7 +19,8 @@ import java.util.UUID;
  * @since 2021/4/27
  */
 @Data
-public class TankJoinMessage {
+@EqualsAndHashCode(callSuper = true)
+public class TankJoinMessage extends Msg {
     private int x;
     private int y;
     private Dir dir;
@@ -46,6 +51,7 @@ public class TankJoinMessage {
         this.id = id;
     }
 
+    @Override
     @SneakyThrows
     public byte[] toBytes() {
         try (final ByteOutputStream byteOutputStream = new ByteOutputStream();
@@ -60,5 +66,32 @@ public class TankJoinMessage {
             out.writeLong(id.getLeastSignificantBits());
             return byteOutputStream.getBytes();
         }
+    }
+
+    @Override
+    public void parse(byte[] bytes) {
+        try (final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+             final ObjectInputStream in = new ObjectInputStream(byteArrayInputStream)) {
+            x = in.readInt();
+            y = in.readInt();
+            dir = Dir.values()[in.readByte()];
+            isMoving = in.readBoolean();
+            isLiving = in.readBoolean();
+            group = Group.values()[in.readByte()];
+            id = new UUID(in.readLong(), in.readLong());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void handle() {
+
+    }
+
+    @Override
+    public MsgType msgType() {
+        return MsgType.TankJoin;
     }
 }

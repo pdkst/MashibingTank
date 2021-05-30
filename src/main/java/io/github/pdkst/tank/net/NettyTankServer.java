@@ -33,8 +33,8 @@ public class NettyTankServer {
                             System.out.println(socketChannel);
                             final ChannelPipeline pipeline = socketChannel.pipeline();
                             pipeline
-                                    .addLast(new TankJoinMessageEncoder())
-                                    .addLast(new TankJoinMessageDecoder())
+                                    .addLast(new MessageEncoder())
+                                    .addLast(new MessageDecoder())
                                     .addLast(new ServerHandler());
                         }
                     })
