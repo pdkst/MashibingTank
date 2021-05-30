@@ -31,9 +31,11 @@ public class TankJoinMessage extends Msg {
     private UUID id;
 
     public TankJoinMessage() {
+        super(MsgType.TankJoin);
     }
 
     public TankJoinMessage(Tank tank) {
+        this();
         this.x = tank.getX();
         this.y = tank.getY();
         this.dir = tank.getDir();
@@ -43,6 +45,7 @@ public class TankJoinMessage extends Msg {
     }
 
     public TankJoinMessage(int x, int y, Dir dir, boolean isMoving, boolean isLiving, Group group, UUID id) {
+        this();
         this.x = x;
         this.y = y;
         this.dir = dir;

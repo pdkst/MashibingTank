@@ -49,6 +49,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
                 msg = new TankJoinMessage();
                 break;
         }
+        assert msg != null;
         msg.parse(bytes);
         out.add(msg);
     }

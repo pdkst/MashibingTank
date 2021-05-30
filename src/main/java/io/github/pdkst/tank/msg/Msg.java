@@ -1,10 +1,17 @@
 package io.github.pdkst.tank.msg;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 /**
  * @author pdkst
  * @since 2021/5/30
  */
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class Msg {
+    private MsgType msgType;
+
     /**
      *
      */
@@ -27,5 +34,7 @@ public abstract class Msg {
     /**
      * @return
      */
-    public abstract MsgType msgType();
+    public MsgType msgType() {
+        return msgType;
+    }
 }
