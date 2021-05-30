@@ -14,12 +14,19 @@ import java.util.List;
  * @since 2021/4/26
  */
 public class MessageDecoder extends ByteToMessageDecoder {
+
+    public static final int HEADER_LENGTH = 5;
+
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        final int readableBytes = in.readableBytes();
+        if (readableBytes < HEADER_LENGTH) {
+            return;
+        }
         in.markReaderIndex();
         final MsgType msgType = MsgType.values()[in.readByte()];
         final int length = in.readInt();
-        if (in.readableBytes() < length) {
+        if (readableBytes < length) {
             in.resetReaderIndex();
             return;
         }
