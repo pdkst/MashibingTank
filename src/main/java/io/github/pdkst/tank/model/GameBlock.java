@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.awt.*;
+import java.util.UUID;
 
 /**
  * @author pdkst
@@ -17,6 +18,7 @@ public abstract class GameBlock {
     protected int width;
     protected int height;
     private final Rectangle rectangle;
+    private UUID id = UUID.randomUUID();
 
     public GameBlock(GameBlock block) {
         this.x = block.x;

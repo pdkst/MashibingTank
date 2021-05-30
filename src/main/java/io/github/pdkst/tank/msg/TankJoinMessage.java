@@ -2,6 +2,7 @@ package io.github.pdkst.tank.msg;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import io.github.pdkst.tank.Dir;
+import io.github.pdkst.tank.GameModel;
 import io.github.pdkst.tank.Group;
 import io.github.pdkst.tank.model.Tank;
 import lombok.Data;
@@ -87,7 +88,23 @@ public class TankJoinMessage extends Msg {
 
     @Override
     public void handle() {
+        final Tank myTank = GameModel.getInstance().getMyTank();
+        final UUID id = myTank.getId();
+        if (id.equals(this.id)) {
+            return;
+        }
+        GameModel.getInstance().addBlock(toTank());
+    }
 
+    private Tank toTank() {
+        final Tank tank = new Tank(x, y);
+        tank.setId(id);
+        tank.setDir(dir);
+        tank.setLiving(isLiving);
+        tank.setMoving(isMoving);
+        tank.setGroup(Group.BAD);
+        tank.setDir(dir);
+        return tank;
     }
 
     @Override
